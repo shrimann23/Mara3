@@ -32,7 +32,7 @@ class AudioScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Text>Welcome to the audio page!</Text>
-                <Button title="Play Sound" onPress={playSound} />
+                <Button title="Play Sound" onPress={this.playSound} />
             </View>
             
         );
