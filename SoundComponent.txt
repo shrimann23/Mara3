@@ -7,7 +7,7 @@ const SoundComponent = () => {
         const [isPlaying, setIsPlaying] = useState(false);
         const [progress, setProgress] = useState(0);
 
-        const sound = new Sound('assets/piano.mp3', Sound.MAIN_BUNDLE, (error) => {
+        const sound = new Sound('./assets/piano.mp3', Sound.MAIN_BUNDLE, (error) => {
             if (error) {
                 console.error(error);
             }
@@ -41,7 +41,7 @@ const SoundComponent = () => {
                     style={styles.playPauseButton}
                 />
             </View>
-        )
+        );
 };
 
 const styles = StyleSheet.create({

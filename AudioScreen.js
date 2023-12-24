@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
-import SoundComponent from './SoundComponent';
+// import SoundComponent from './SoundComponent';
 
 class AudioScreen extends React.Component {
     render() {
@@ -9,7 +9,7 @@ class AudioScreen extends React.Component {
         return (
             <View>
                 <Text>Welcome to the audio page!</Text>
-                <SoundComponent />
+                {/* <SoundComponent /> */}
             </View>
             
         );
