@@ -1,28 +1,12 @@
 import React from 'react';
-import { useState, useCallback } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 
 class VideoScreen extends React.Component {
     render() {
-        const { navigation } = this.props;
-        
-        // const [playing, setPlaying] = useState(false);
-
-        // const onStateChange = useCallback((state) => {
-        //     if (state === "ended") {
-        //         setPlaying(false);
-        //         Alert.alert("video has finished playing!");
-        //     }
-        // }, []);
-
-        // const togglePlaying = useCallback(() => {
-        //     setPlaying((prev) => !prev);
-        // }, []);
-
         return (
-            <View>
-                <Text>Welcome to our video page!</Text>
+            <View style={styles.container}>
+                <Text style={styles.text}>Welcome to the video page!</Text>
                 <YoutubePlayer
                     videoId={"jpEo8tQjfVY"}
                     play={true}
@@ -51,5 +35,18 @@ class VideoScreen extends React.Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#ecf0f1',
+      padding: 10,
+      gap: 15,
+    },
+    text: {
+        fontWeight: 'bold',
+        fontSize: 30,
+    }
+});
 
 export default VideoScreen;

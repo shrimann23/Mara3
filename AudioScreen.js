@@ -8,7 +8,12 @@ class AudioScreen extends React.Component {
         super(props);
         this.state = {
             sound: null,
+            isPlaying: false,
         };
+    }
+
+    componentDidMount() {
+        this.loadAudio();
     }
 
     componentWillUnmount() {
@@ -19,20 +24,38 @@ class AudioScreen extends React.Component {
         }
     }
 
-    playSound = async () => {
-        console.log('Loading sound');
+    async loadAudio() {
         const { sound: audioSound } = await Audio.Sound.createAsync(require('./assets/piano.mp3'));
         this.setState({ sound: audioSound });
-        
-        console.log('Playing sound');
-        await audioSound.playAsync();
+
+        audioSound.setOnPlaybackStatusUpdate((status) => {
+            if (status.isLoaded) {
+                this.setState({ isPlaying: status.isPlaying });
+            }
+        });
+    }
+
+    togglePlayback = async() => { //change format to earlier function if it works
+        const { sound, isPlaying } = this.state;
+        if (sound) {
+            if (isPlaying) {
+                await sound.pauseAsync();
+            } else {
+                await sound.playAsync();
+            }
+            this.setState({ isPlaying: !isPlaying });
+        }
     };
 
+
     render () {
+        const { isPlaying } = this.state;
         return (
             <View style={styles.container}>
-                <Text>Welcome to the audio page!</Text>
-                <Button title="Play Sound" onPress={this.playSound} />
+                <Text style={styles.text}>Welcome to the audio page!</Text>
+                
+                <Text>Sample Piano Audio</Text>
+                <Button title={isPlaying ? 'Pause' : 'Play'} onPress={this.togglePlayback}/>
             </View>
             
         );
@@ -42,10 +65,14 @@ class AudioScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
       backgroundColor: '#ecf0f1',
       padding: 10,
+      gap: 15,
     },
+    text: {
+        fontWeight: 'bold',
+        fontSize: 30,
+    }
 });
 
 export default AudioScreen;
