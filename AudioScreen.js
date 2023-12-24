@@ -3,30 +3,32 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 
 class AudioScreen extends React.Component {
-    render() {
-        const { navigation } = this.props;
+    
+    constructor(props) {
+        super(props);
+        this.state = {
+            sound: null,
+        };
+    }
 
-        const [sound, setSound] = React.useState();
-
-        async function playSound() {
-            console.log('Loading Sound');
-            const { sound: audioSound } = await Audio.Sound.createAsync(require('./assets/piano.mp3'));
-            setSound(audioSound);
-            console.log('Playing Sound');
-            await audioSound.playAsync();
+    componentWillUnmount() {
+        const { sound } = this.state;
+        if (sound) {
+            console.log('Unloading sound');
+            sound.unloadAsync();
         }
+    }
 
-        React.useEffect(() => {
-            return () => {
-                if (sound) {
-                    console.log('Unloading sound');
-                    sound.unloadAsync();
-                    setSound(null);
-                }
-            };  
-        }, [sound]);
+    playSound = async () => {
+        console.log('Loading sound');
+        const { sound: audioSound } = await Audio.Sound.createAsync(require('./assets/piano.mp3'));
+        this.setState({ sound: audioSound });
+        
+        console.log('Playing sound');
+        await audioSound.playAsync();
+    };
 
-
+    render () {
         return (
             <View style={styles.container}>
                 <Text>Welcome to the audio page!</Text>
