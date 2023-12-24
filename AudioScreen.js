@@ -1,35 +1,49 @@
-import React from 'react';
-import { View, Text, Button, Slider } from 'react-native';
-import Audio from 'react-native-audio';
+import * as React from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import { Audio } from 'expo-av';
 
 class AudioScreen extends React.Component {
     render() {
         const { navigation } = this.props;
 
-        const audio = new Audio(require('./assets/piano.mp3'));
+        const [sound, setSound] = React.useState();
 
-        // const playSound = () => {
-        //     audio.play();
-        // }
+        async function playSound() {
+            console.log('Loading Sound');
+            const { sound: audioSound } = await Audio.Sound.createAsync(require('./assets/piano.mp3'));
+            setSound(audioSound);
+            console.log('Playing Sound');
+            await audioSound.playAsync();
+        }
 
-        // const pauseSound = () => {
-        //     audio.pause();
-        // }
+        React.useEffect(() => {
+            return () => {
+                if (sound) {
+                    console.log('Unloading sound');
+                    sound.unloadAsync();
+                    setSound(null);
+                }
+            };  
+        }, [sound]);
 
-        // const stopSound = () => {
-        //     audio.stop();
-        // }
 
         return (
-            <View>
+            <View style={styles.container}>
                 <Text>Welcome to the audio page!</Text>
-                {/* <Button title="Play" onPress={playSound} />
-                <Button title="Pause" onPress={pauseSound} />
-                <Button title="Stop" onPress={stopSound} /> */}
+                <Button title="Play Sound" onPress={playSound} />
             </View>
             
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: '#ecf0f1',
+      padding: 10,
+    },
+});
 
 export default AudioScreen;
